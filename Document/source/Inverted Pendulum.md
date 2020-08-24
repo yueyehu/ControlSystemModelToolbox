@@ -1,6 +1,10 @@
 # Inverted Pendulum Dynamics Model
 
 ## Inverted Pendulum
+<center>
+<img src="../image/inverted pendulum.jpg" alt="avatar" style="zoom:60%;"/>
+<div style="font-size:14px;color:#C0C0C0;text-decoration:underline">Fig 1. Schematic of an inverted pendulum</div> 
+</center>
 We can obtain the initial mathmatical model of inverted pendulum from the wiki [1] as following:
 $$
 \begin{align} \label{eq:Roa}
@@ -34,6 +38,10 @@ $$
 \end{align}
 $$
 ## Double Inverted Pendulum
+<center>
+<img src="../image/double inverted pendulum.jpg" alt="avatar" style="zoom:60%;"/>
+<div style="font-size:14px;color:#C0C0C0;text-decoration:underline">Fig 2. Schematic of a double inverted pendulum</div> 
+</center>
 We can obtain the initial mathmatical model of double inverted pendulum[2] as following:
 
 ## References
