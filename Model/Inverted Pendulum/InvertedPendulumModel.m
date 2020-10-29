@@ -21,7 +21,7 @@ function setup(block)
   end
 
   % Register the parameters.
-  block.NumDialogPrms     = 5;
+  block.NumDialogPrms     = 7;
   
   % Set up the continuous states.
   block.NumContStates = 4;
@@ -51,6 +51,8 @@ function setup(block)
  L = block.DialogPrm(3).Data;
  Kc = block.DialogPrm(4).Data;
  Kp = block.DialogPrm(5).Data;
+ x = block.DialogPrm(6).Data;
+ theta = block.DialogPrm(7).Data;
     
 function InitializeConditions(block)
 % Initialize 6 States
@@ -58,13 +60,16 @@ for i=1:4
     block.OutputPort(i).Data = 0;
     block.ContStates.Data(i) = 0;
 end
-block.OutputPort(3).Data = pi;
-block.ContStates.Data(3) = pi;
+block.OutputPort(1).Data = block.DialogPrm(6).Data;
+block.ContStates.Data(1) = block.DialogPrm(6).Data;
+block.OutputPort(3).Data = block.DialogPrm(7).Data;
+block.ContStates.Data(3) = block.DialogPrm(7).Data;
 
 function Outputs(block)
 for i = 1:4
   block.OutputPort(i).Data = block.ContStates.Data(i);
 end
+block.OutputPort(3).Data = mod(block.ContStates.Data(3),2*pi);
 
 function Derivatives(block)
 m = block.DialogPrm(1).Data;
@@ -84,7 +89,7 @@ F = block.InputPort(1).Data;
 
 M = [m+M m*L*cos(theta);
      m*L*cos(theta) 4/3*m*L^2];
-C = [0 -m*L*sin(theta);
+C = [0 -m*L*sin(theta)*omega;
      0 0];
 G = [0;
      -m*g*L*sin(theta)];

@@ -35,7 +35,7 @@ Assume the cart friction is $F_d=k_c\dot x$ and pendulum friction is $\tau_d=k_p
 
 $$
 \begin{align}
-(m+M)\ddot x+ml\ddot \theta cos\theta-ml\dot\theta sin\theta&=f-k_c\dot x\\
+(m+M)\ddot x+ml\ddot \theta cos\theta-ml\dot\theta^2 sin\theta&=f-k_c\dot x\\
 ml\ddot x cos\theta+(I+ml^2)\ddot \theta-mglsin\theta&=-k_p\dot\theta
 \end{align}
 $$
@@ -51,7 +51,7 @@ mlcos\theta& I+ml^2
 \ddot \theta\\
 \end{bmatrix}+
 \begin{bmatrix}
-0& -mlsin \theta\\
+0& -mlsin \theta\dot\theta\\
 0& 0
 \end{bmatrix}
 \begin{bmatrix}
