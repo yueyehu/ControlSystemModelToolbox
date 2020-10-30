@@ -69,7 +69,6 @@ function Outputs(block)
 for i = 1:4
   block.OutputPort(i).Data = block.ContStates.Data(i);
 end
-block.OutputPort(3).Data = mod(block.ContStates.Data(3),2*pi);
 
 function Derivatives(block)
 m = block.DialogPrm(1).Data;
