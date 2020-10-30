@@ -1,4 +1,4 @@
-function QuadcopterModel(block)
+function QuadrotorModel(block)
 setup(block);
 
 function setup(block)
@@ -52,7 +52,7 @@ function setup(block)
 % -------------------------------------------------------------------
 
  function CheckPrms(block)
- J = block.DialogPrm(1).Data;
+ I = block.DialogPrm(1).Data;
  m = block.DialogPrm(2).Data;
     
 
@@ -74,7 +74,7 @@ for i = 4:6
 end
 
 function Derivatives(block)
-J = block.DialogPrm(1).Data;
+I = block.DialogPrm(1).Data;
 m = block.DialogPrm(2).Data;
 g = 9.81;
 
@@ -102,10 +102,11 @@ end
 D_v = block.InputPort(5).Data(1:3);
 D_omega = block.InputPort(5).Data(4:6);
 
+% model
 d_pos = vel;
 d_vel = (m * g * e3 - F_l * R * e3 - D_v .* vel)/m;
 d_euler = R_oa * omega;
-d_omega = inv(J) * (Tau.'-omega_hat * J * omega - D_omega .* omega);
+d_omega = I\(Tau.'-omega_hat * I * omega - D_omega .* omega);
 
 d_state = [d_pos(1),d_pos(2),d_pos(3),d_vel(1),d_vel(2),d_vel(3),d_euler(1),d_euler(2),d_euler(3), d_omega(1),d_omega(2),d_omega(3)].';
 %This is the state derivative vector
