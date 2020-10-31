@@ -50,19 +50,64 @@ Let $v=\dot r$ and $\omega=\dot\alpha$, we obtain the mathematical model of the 
 $$
 \begin{align}
 \dot r &= v\\
-\dot v &= \frac{mg\sin\alpha-m(L-r)\dot\alpha^2}{(m+\frac{J}{R^2})}\\
+\dot v &= \frac{mg\sin\alpha-m(L-r)\dot\alpha^2}{m+\frac{J}{R^2}}\\
 \dot \alpha &= \omega \\
 \dot \omega &= \frac{1}{(m(L-r)^2+\frac{1}{3}ML^2)}\big(\tau+2m(L-r)\dot r\dot\alpha-\big(mg(L-r)+\frac{1}{2}MgL\big)\cos\alpha\big)
 \end{align}
 $$
-Assume $\alpha=0$, we simplify the model as follows:
+Assume $\alpha=0$ and $\dot\alpha=0$, we simplify the model as follows:
 $$
 \begin{align}
-\ddot r &= \frac{mg\sin\alpha}{(m+\frac{J}{R^2})}\\
+\dot r &= v\\
+\ddot r &= \frac{mg\sin\alpha}{m+\frac{J}{R^2}}\\
+\dot \alpha &= \omega \\
+\dot \omega &= \frac{1}{(m(L-r)^2+\frac{1}{3}ML^2)}\big(\tau-\big(mg(L-r)+\frac{1}{2}MgL\big)\big)
 \end{align}
 $$
 
+## Controller
 
+We use the simplified model to design controller. Our object is to let the ball at a fixed point $r_d$. Since this system has two degree $r$ and $\alpha$, and only have one input $\tau$, this is an under-actuated system. We proposed a cascaded controller, the inner controller is to track the trajectory of $\alpha$, and the outer controller is to control the ball at $r_d$. We introduce some errors as follows:
+$$
+\begin{align}
+e_1 &= r - r_d\\
+e_2 &= \dot e_1+k_1e_1\\
+e_3 &= \alpha-\alpha_d\\
+e_4 &= \dot e_3+k_3e_3
+\end{align}
+$$
+where $k_1$ and $k_3$ is positive constant.
+
+We consider a Lyapunov function $V_1=\frac{1}{2}e_1^2+\frac{1}{2}e_2^2$ for outer controller. The time derivative of it is 
+$$
+\begin{align}
+\dot V_1 &= e_1\dot e_1+e_2\dot e_2\\
+       &= e_1(e_2-k_1e_1)+e_2(\ddot e_1+k_1\dot e_1) \\
+       &=-k_1e_1^2+e_2(\ddot e_1+k_1\dot e_1+e_1)
+\end{align}
+$$
+We choose $\ddot e_1+k_1\dot e_1+e_1 = -k_2e_2$, where $k_2$ is positive constant, which make $\dot V_1=-k_1e_1^2-k_2e_2^2\leq0$. Since $r_d$ is fixed point, we obtain $\ddot r+k_1r+e_1=-k_2e_2$. Using the simplified model, we obtain 
+$$
+\alpha_d=-\frac{(k_1r+k_2e_2+e_1)(m+\frac{J}{R^2})}{mg\sin\alpha}
+$$
+Similarly, We consider a Lyapunov function $V_2=\frac{1}{2}e_3^2+\frac{1}{2}e_4^2$ for inner controller. The time derivative of it is
+$$
+\begin{align}
+\dot V_2 &= e_3\dot e_3+e_4\dot e_4\\
+         &= e_3(e_4-k_3e_3)+e_4(\ddot e_3+k_3\dot e_3)\\ 
+         &=-k_3e_3^2+e_4(\ddot e_3+k_3\dot e_3+e_3)
+\end{align}
+$$
+We choose $\ddot e_3+k_3\dot e_3+e_3 = -k_4e_4$, where $k_2$ is positive constant, which make $\dot V_1=-k_3e_3^2-k_4e_4^2\leq0$. Using the simplified model, we obtain 
+$$
+\frac{1}{(m(L-r)^2+\frac{1}{3}ML^2)}\big(\tau-\big(mg(L-r)+\frac{1}{2}MgL\big)\big)=-(k_3\dot e_3+k_4e_4+e_3)
+$$
+then
+$$
+\tau=-(k_3\dot e_3+k_4e_4+e_3)(m(L-r)^2+\frac{1}{3}ML^2)+\big(mg(L-r)+\frac{1}{2}MgL\big)
+$$
+
+## Appendix
 We obtain the relationship between $\alpha$ and $\theta$ is
 
 $\alpha=\arccos(\frac{L^2+l^2-L_a^2}{2Ll}) +\arcsin\frac{d\sin(\pi-\delta-\theta)}{l}-\delta$ ,
